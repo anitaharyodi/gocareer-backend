@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model jurusan {
+  id           Int            @id @default(autoincrement())
+  tipe_sekolah String         @db.VarChar(255)
+  nama         String         @db.VarChar(255)
+  item_jurusan item_jurusan[]
+}
+
+model kabupaten {
+  id      Int       @id @default(autoincrement())
+  nama    String?   @db.VarChar(255)
+  sekolah sekolah[]
+}
+
+model sekolah {
+  id           Int       @id @default(autoincrement())
+  id_kabupaten Int
+  tipe_sekolah String?   @db.VarChar(255)
+  nama         String?   @db.VarChar(255)
+  kabupaten    kabupaten @relation(fields: [id_kabupaten], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_kabupaten")
+}
+
+model tes_minat {
+  id           Int                 @id @default(autoincrement())
+  soal         String?             @db.VarChar(255)
+  jawaban_user String?             @db.VarChar
+  pilihan      pilihan_tes_minat[]
+}
+
+model pilihan_tes_minat {
+  id           Int       @id @default(autoincrement())
+  id_tes_minat Int
+  pilihan      String    @db.VarChar(255)
+  tes          tes_minat @relation(fields: [id_tes_minat], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_tes_minat")
+}
+
+model item_jurusan {
+  id         Int      @id @default(autoincrement())
+  id_jurusan Int?
+  nama       String?  @db.VarChar(255)
+  youtube    String?  @db.VarChar(255)
+  jurusan    jurusan? @relation(fields: [id_jurusan], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_jurusan")
+}
