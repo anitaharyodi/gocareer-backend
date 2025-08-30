@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -31,7 +31,7 @@ model sekolah {
 model tes_minat {
   id           Int                 @id @default(autoincrement())
   soal         String?             @db.VarChar(255)
-  jawaban_user String?             @db.VarChar
+  jawaban_user String?             @db.VarChar(255)
   pilihan      pilihan_tes_minat[]
 }
 
